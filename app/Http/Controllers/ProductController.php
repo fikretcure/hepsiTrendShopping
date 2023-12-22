@@ -2,46 +2,78 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Managements\ExitManagement;
+use App\Http\Repositories\ProductRepository;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\ProductCollection;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 
+/**
+ *
+ */
 class ProductController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
+     * @var ProductRepository
+     */
+    public ProductRepository $productRepository;
+
+
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $this->productRepository = new ProductRepository();
+    }
+
+
+    /**
+     * @return JsonResponse
      */
     public function index()
     {
-        //
+        return ExitManagement::ok(ProductCollection::collection($this->productRepository->all()));
     }
 
+
     /**
-     * Store a newly created resource in storage.
+     * @param StoreProductRequest $request
+     * @return JsonResponse
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        return ExitManagement::ok($this->productRepository->create($request->validated()));
     }
 
+
     /**
-     * Display the specified resource.
+     * @param Product $product
+     * @return void
      */
     public function show(Product $product)
     {
         //
     }
 
+
     /**
-     * Update the specified resource in storage.
+     * @param UpdateProductRequest $request
+     * @param Product $product
+     * @return void
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
         //
     }
 
+
     /**
-     * Remove the specified resource from storage.
+     * @param Product $product
+     * @return void
      */
     public function destroy(Product $product)
     {
