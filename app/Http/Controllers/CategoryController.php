@@ -2,27 +2,83 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Managements\ExitManagement;
+use App\Http\Repositories\CategoryRepository;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Resources\CategoryCollection;
 use App\Models\Category;
+use Illuminate\Http\JsonResponse;
 
+/**
+ *
+ */
 class CategoryController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
+     * @var CategoryRepository
      */
-    public function index()
+    public CategoryRepository $categoryRepository;
+
+
+    /**
+     *
+     */
+    public function __construct()
     {
-        //
+        $this->categoryRepository = new CategoryRepository();
     }
 
 
+    /**
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        return ExitManagement::ok(CategoryCollection::collection($this->categoryRepository->all()));
+    }
+
 
     /**
-     * Remove the specified resource from storage.
+     * @param StoreCategoryRequest $request
+     * @return JsonResponse
      */
-    public function destroy(Category $category)
+    public function store(StoreCategoryRequest $request): JsonResponse
     {
-        //
+        $store = $this->categoryRepository->create($request->validated());
+        return ExitManagement::ok(CategoryCollection::make($store));
+    }
+
+
+    /**
+     * @param Category $category
+     * @return JsonResponse
+     */
+    public function show(Category $category): JsonResponse
+    {
+        return ExitManagement::ok(CategoryCollection::make($category));
+    }
+
+
+    /**
+     * @param UpdateCategoryRequest $request
+     * @param Category $category
+     * @return JsonResponse
+     */
+    public function update(UpdateCategoryRequest $request, Category $category): JsonResponse
+    {
+        $update = $this->categoryRepository->update($category->id, $request->validated());
+        return ExitManagement::ok($update);
+    }
+
+
+    /**
+     * @param Category $category
+     * @return JsonResponse
+     */
+    public function destroy(Category $category): JsonResponse
+    {
+        return ExitManagement::ok($category->delete());
     }
 }
