@@ -34,7 +34,7 @@ class ProductController extends Controller
     /**
      * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
         return ExitManagement::ok(ProductCollection::collection($this->productRepository->all()));
     }
@@ -44,39 +44,41 @@ class ProductController extends Controller
      * @param StoreProductRequest $request
      * @return JsonResponse
      */
-    public function store(StoreProductRequest $request)
+    public function store(StoreProductRequest $request): JsonResponse
     {
-        return ExitManagement::ok($this->productRepository->create($request->validated()));
+        $store = $this->productRepository->create($request->validated());
+        return ExitManagement::ok(ProductCollection::make($store));
     }
 
 
     /**
      * @param Product $product
-     * @return void
+     * @return JsonResponse
      */
-    public function show(Product $product)
+    public function show(Product $product): JsonResponse
     {
-        //
+        return ExitManagement::ok(ProductCollection::make($product));
     }
 
 
     /**
      * @param UpdateProductRequest $request
      * @param Product $product
-     * @return void
+     * @return JsonResponse
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {
-        //
+        $update = $this->productRepository->update($product->id, $request->validated());
+        return ExitManagement::ok($update);
     }
 
 
     /**
      * @param Product $product
-     * @return void
+     * @return JsonResponse
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product): JsonResponse
     {
-        //
+        return ExitManagement::ok($product->delete());
     }
 }

@@ -71,7 +71,7 @@ class Repository
      * @param array|null $data
      * @return mixed
      */
-    public function update(int $id, array $data = null)
+    public function update( $id, array $data = null)
     {
         return $this->model->whereId($id)->update($data);
     }
