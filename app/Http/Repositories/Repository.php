@@ -26,7 +26,7 @@ class Repository
     /**
      * @return Collection
      */
-    public function all()
+    public function all(): Collection
     {
         return $this->model->all();
     }
@@ -34,7 +34,7 @@ class Repository
     /**
      * @return mixed
      */
-    public function get()
+    public function get(): mixed
     {
         return $this->model->get();
     }
@@ -43,7 +43,7 @@ class Repository
      * @param $id
      * @return mixed
      */
-    public function find($id)
+    public function find($id): mixed
     {
         return $this->model->findOrFail($id);
     }
@@ -61,7 +61,7 @@ class Repository
      * @param array|null $data
      * @return mixed
      */
-    public function create(array $data = null)
+    public function create(array $data = null): mixed
     {
         return $this->model->create($data);
     }
@@ -71,7 +71,7 @@ class Repository
      * @param array|null $data
      * @return mixed
      */
-    public function update( $id, array $data = null)
+    public function update($id, array $data = null): mixed
     {
         return $this->model->whereId($id)->update($data);
     }

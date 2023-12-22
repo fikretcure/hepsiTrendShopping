@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Managements\CategoryManagement;
 use App\Http\Managements\ExitManagement;
 use App\Http\Repositories\CategoryRepository;
 use App\Http\Requests\StoreCategoryRequest;
@@ -9,6 +10,7 @@ use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryCollection;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 
 /**
  *
@@ -21,6 +23,11 @@ class CategoryController extends Controller
      */
     public CategoryRepository $categoryRepository;
 
+    /**
+     * @var CategoryManagement
+     */
+    public CategoryManagement $categoryManagement;
+
 
     /**
      *
@@ -28,6 +35,7 @@ class CategoryController extends Controller
     public function __construct()
     {
         $this->categoryRepository = new CategoryRepository();
+        $this->categoryManagement = new CategoryManagement();
     }
 
 
@@ -76,9 +84,11 @@ class CategoryController extends Controller
     /**
      * @param Category $category
      * @return JsonResponse
+     * @throws ValidationException
      */
     public function destroy(Category $category): JsonResponse
     {
+        $this->categoryManagement->checkUsageProduct($category);
         return ExitManagement::ok($category->delete());
     }
 }
