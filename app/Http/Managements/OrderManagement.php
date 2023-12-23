@@ -91,7 +91,6 @@ class OrderManagement
     {
         $this->checkProductStock($product, $request->quantity);
         $order = $this->createOrder($request->validated() + ['price' => $product->price]);
-        $this->productManagement->stockDecrement($product, $request->quantity);
         return $order;
     }
 
@@ -123,7 +122,6 @@ class OrderManagement
         }
         $this->checkProductStock($product, $request->quantity);
         $this->storeOrderItems($order, $request->validated() + ['price' => $product->price]);
-        $this->productManagement->stockDecrement($product, $request->quantity);
         return $order;
     }
 
