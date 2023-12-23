@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained();
             $table->string('name')->unique();
             $table->float('price');
-            $table->integer('stock');
+            $table->integer('stock')->nullable();
             $table->integer('is_daily');
             $table->string('desc');
             $table->string('avatar');
