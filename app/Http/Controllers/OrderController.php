@@ -8,7 +8,6 @@ use App\Http\Managements\OrderManagement;
 use App\Http\Repositories\OrderItemRepository;
 use App\Http\Repositories\OrderRepository;
 use App\Http\Repositories\ProductRepository;
-use App\Http\Requests\QuantityProductRequest;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\OrderCollection;
@@ -126,7 +125,7 @@ class OrderController extends Controller
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function increasingQuantityProduct(Request $request)
+    public function increasingQuantityProduct(Request $request): JsonResponse
     {
         $data = $this->orderManagement->checkOrderAndProduct($request);
         $this->orderManagement->incrementQuantityProduct($data['order'], $data['product']);
@@ -138,7 +137,7 @@ class OrderController extends Controller
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function decrementQuantityProduct(Request $request)
+    public function decrementQuantityProduct(Request $request): JsonResponse
     {
         $data = $this->orderManagement->checkOrderAndProduct($request);
         $this->orderManagement->decrementQuantityProduct($data['order'], $data['product']);
@@ -150,7 +149,7 @@ class OrderController extends Controller
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function removeProduct(Request $request)
+    public function removeProduct(Request $request): JsonResponse
     {
         $data = $this->orderManagement->checkOrderAndProduct($request);
         $this->orderManagement->removeProduct($data['order'], $data['product']);

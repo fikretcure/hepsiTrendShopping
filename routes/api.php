@@ -16,6 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('products',ProductController::class);
-Route::apiResource('categories',CategoryController::class);
-Route::apiResource('orders',OrderController::class);
+Route::apiResource('products', ProductController::class);
+Route::apiResource('categories', CategoryController::class);
+
+Route::prefix('basket')->controller(OrderController::class)->group(function () {
+    Route::get('', 'basket')->name('basket');
+    Route::put('increasing-quantity-product', 'increasingQuantityProduct')->name('increasingQuantityProduct');
+    Route::put('decrement-quantity-product', 'decrementQuantityProduct')->name('decrementQuantityProduct');
+    Route::delete('remove-product', 'decrementQuantityProduct')->name('removeProduct');
+});
+
+Route::apiResource('orders', OrderController::class);
