@@ -46,12 +46,23 @@ class DatabaseSeeder extends Seeder
             'is_daily' => 1
         ]);
 
-        Category::create([
+        $category = Category::create([
             'name' => 'Kitap'
-        ])->products()->create([
+        ]);
+
+        $category->products()->create([
             'name' => 'Fen Bilgisi',
             'price' => 100,
             'stock' => 1000,
+            'desc' => '1',
+            'avatar' => '1',
+            'is_daily' => 0
+        ]);
+
+        $category->products()->create([
+            'name' => 'Turkce',
+            'price' => 100,
+            'stock' => 420,
             'desc' => '1',
             'avatar' => '1',
             'is_daily' => 0

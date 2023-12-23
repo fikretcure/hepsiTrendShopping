@@ -24,15 +24,18 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'basket' => [
+            'product_id' => [
                 'required',
-                'array'
-            ],
-            'basket.*' => [
-                'numeric',
                 Rule::exists(Product::class, 'id')
+            ],
+            'quantity' => [
+                'required',
+                'numeric',
+            ],
+            'daily_at' => [
+                'filled',
+                'date'
             ]
-
         ];
     }
 }

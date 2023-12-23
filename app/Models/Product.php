@@ -27,6 +27,10 @@ class Product extends Model
         'avatar',
     ];
 
+   protected $casts = [
+       'is_daily' => 'bool'
+   ];
+
 
     /**
      * @return BelongsTo
