@@ -5,7 +5,6 @@ namespace App\Rules;
 use App\Http\Managements\RedisManagement;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Support\Facades\Redis;
 
 /**
  *

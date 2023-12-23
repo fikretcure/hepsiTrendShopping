@@ -33,16 +33,20 @@ class UpdateProductRequest extends FormRequest
             ],
             'name' => [
                 'filled',
+                'string',
                 Rule::unique(Product::class)->ignore($this->product),
-                'string'
             ],
             'price' => [
                 'filled',
                 'numeric'
             ],
-            'daily_stock' => [
+            'stock' => [
                 'filled',
                 'numeric'
+            ],
+            'is_daily' => [
+                'filled',
+                'boolean'
             ],
             'desc' => [
                 'filled',
@@ -51,7 +55,7 @@ class UpdateProductRequest extends FormRequest
             'avatar' => [
                 'filled',
                 'string'
-            ],
+            ]
         ];
     }
 }

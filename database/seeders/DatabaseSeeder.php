@@ -18,10 +18,10 @@ class DatabaseSeeder extends Seeder
         ])->products()->create([
             'name' => 'Lastik Degisimi',
             'price' => 100,
-            'daily_stock' => 10,
+            'stock' => 10,
             'desc' => '1',
             'avatar' => '1',
-            'user_id' => 3
+            'is_daily' => 1
         ]);
 
         Category::create([
@@ -29,10 +29,10 @@ class DatabaseSeeder extends Seeder
         ])->products()->create([
             'name' => 'Musluk Tamiri',
             'price' => 100,
-            'daily_stock' => 10,
+            'stock' => 10,
             'desc' => '1',
             'avatar' => '1',
-            'user_id' => 3
+            'is_daily' => 1
         ]);
 
         Category::create([
@@ -40,10 +40,21 @@ class DatabaseSeeder extends Seeder
         ])->products()->create([
             'name' => 'Matematik Dersi',
             'price' => 100,
-            'daily_stock' => 10,
+            'stock' => 10,
             'desc' => '1',
             'avatar' => '1',
-            'user_id' => 3
+            'is_daily' => 1
+        ]);
+
+        Category::create([
+            'name' => 'Kitap'
+        ])->products()->create([
+            'name' => 'Fen Bilgisi',
+            'price' => 100,
+            'stock' => 1000,
+            'desc' => '1',
+            'avatar' => '1',
+            'is_daily' => 0
         ]);
     }
 }

@@ -21,10 +21,10 @@ class Product extends Model
         'category_id',
         'name',
         'price',
-        'daily_stock',
+        'stock',
+        'is_daily',
         'desc',
         'avatar',
-        'user_id',
     ];
 
 
@@ -34,22 +34,5 @@ class Product extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
-    }
-
-
-    /**
-     * @var string[]
-     */
-    protected $appends = [
-        'expert_user'
-    ];
-
-
-    /**
-     * @return mixed
-     */
-    public function getExpertUserAttribute(): mixed
-    {
-        return (new RedisManagement())->getUserById($this->user_id);
     }
 }

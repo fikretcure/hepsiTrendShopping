@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained();
-            $table->integer('user_id');
             $table->string('name')->unique();
             $table->float('price');
-            $table->integer('daily_stock');
+            $table->integer('stock');
+            $table->integer('is_daily');
             $table->string('desc');
             $table->string('avatar');
             $table->timestamps();

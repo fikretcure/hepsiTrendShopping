@@ -38,7 +38,10 @@ class StoreProductRequest extends FormRequest
             'price' => [
                 'required',
             ],
-            'daily_stock' => [
+            'stock' => [
+                'required',
+            ],
+            'is_daily' => [
                 'required',
             ],
             'desc' => [
@@ -46,12 +49,7 @@ class StoreProductRequest extends FormRequest
             ],
             'avatar' => [
                 'required',
-            ],
-            'user_id' => [
-                'required',
-                'numeric',
-                new UserCheckRule()
-            ],
+            ]
         ];
     }
 }
