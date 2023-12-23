@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained();
             $table->foreignId('product_id')->constrained();
-            $table->dateTime('daily_at')->nullable();
             $table->integer('price');
+            $table->dateTime('daily_at')->nullable();
             $table->integer('quantity')->nullable();
             $table->timestamps();
         });
