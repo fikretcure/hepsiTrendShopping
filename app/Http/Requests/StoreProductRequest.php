@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Rules\UserCheckRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -45,6 +46,11 @@ class StoreProductRequest extends FormRequest
             ],
             'avatar' => [
                 'required',
+            ],
+            'user_id' => [
+                'required',
+                'numeric',
+                new UserCheckRule()
             ],
         ];
     }
