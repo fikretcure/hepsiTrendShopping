@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained();
             $table->dateTime('daily_at')->nullable();
             $table->integer('price');
-            $table->integer('quantity');
+            $table->integer('quantity')->nullable();
             $table->timestamps();
         });
     }
