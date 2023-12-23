@@ -29,7 +29,7 @@ class StoreOrderRequest extends FormRequest
                 Rule::exists(Product::class, 'id')
             ],
             'quantity' => [
-                'required',
+                'filled',
                 'numeric',
             ],
             'daily_at' => [
