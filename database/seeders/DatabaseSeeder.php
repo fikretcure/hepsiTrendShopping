@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             'daily_stock' => 10,
             'desc' => '1',
             'avatar' => '1',
+            'user_id' => 3
         ]);
 
         Category::create([
@@ -31,6 +32,7 @@ class DatabaseSeeder extends Seeder
             'daily_stock' => 10,
             'desc' => '1',
             'avatar' => '1',
+            'user_id' => 3
         ]);
 
         Category::create([
@@ -41,6 +43,7 @@ class DatabaseSeeder extends Seeder
             'daily_stock' => 10,
             'desc' => '1',
             'avatar' => '1',
+            'user_id' => 3
         ]);
     }
 }
