@@ -74,6 +74,14 @@ class CategoryManagement
                 return $order;
             }
         }
+
+        if (!$request->has('quantity')) {
+            throw ValidationException::withMessages([
+                'daily_at' => ['Urun adedini girmelisiniz !'],
+            ]);
+        }
+
+
         $checkStock = $product->stock >= $request->quantity;
         if (!$checkStock) {
             throw ValidationException::withMessages([
@@ -133,7 +141,27 @@ class CategoryManagement
             }
         }
 
-        return 11;
+        if (!$request->has('quantity')) {
+            throw ValidationException::withMessages([
+                'daily_at' => ['Urun adedini girmelisiniz !'],
+            ]);
+        }
+
+
+        $checkStock = $product->stock >= $request->quantity;
+        if (!$checkStock) {
+            throw ValidationException::withMessages([
+                'product_id' => ['Urun tukenmistir !'],
+            ]);
+        }
+
+        $order->items()->create([
+            'price' => $product->price,
+            'product_id' => $request->product_id,
+            'quantity' => $request->quantity
+        ]);
+        $product->decrement('stock', $request->quantity);
+        return $order;
 
     }
 

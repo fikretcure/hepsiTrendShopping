@@ -22,15 +22,10 @@ class Product extends Model
         'name',
         'price',
         'stock',
-        'is_daily',
+        'payment_type',
         'desc',
         'avatar',
     ];
-
-   protected $casts = [
-       'is_daily' => 'bool'
-   ];
-
 
     /**
      * @return BelongsTo

@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             'stock' => 10,
             'desc' => '1',
             'avatar' => '1',
-            'is_daily' => 1
+            'payment_type' => 1
         ]);
 
         Category::create([
@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             'stock' => 10,
             'desc' => '1',
             'avatar' => '1',
-            'is_daily' => 1
+            'payment_type' => 1
         ]);
 
         Category::create([
@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
             'stock' => 10,
             'desc' => '1',
             'avatar' => '1',
-            'is_daily' => 1
+            'payment_type' => 1
         ]);
 
         $category = Category::create([
@@ -56,7 +56,6 @@ class DatabaseSeeder extends Seeder
             'stock' => 1000,
             'desc' => '1',
             'avatar' => '1',
-            'is_daily' => 0
         ]);
 
         $category->products()->create([
@@ -65,7 +64,6 @@ class DatabaseSeeder extends Seeder
             'stock' => 420,
             'desc' => '1',
             'avatar' => '1',
-            'is_daily' => 0
         ]);
     }
 }
