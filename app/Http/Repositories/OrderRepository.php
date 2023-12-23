@@ -35,4 +35,13 @@ class OrderRepository extends Repository
     {
         return $this->model->where('status', '!=', 1)->get();
     }
+
+
+    /**
+     * @return mixed
+     */
+    public function whereUserWhereStatusBasket(): mixed
+    {
+        return $this->model->where('user_id', request()->header('X-USER-ID'))->where('status', 1)->first();
+    }
 }
