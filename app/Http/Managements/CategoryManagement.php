@@ -4,7 +4,6 @@ namespace App\Http\Managements;
 
 use App\Http\Repositories\OrderItemRepository;
 use App\Http\Repositories\OrderRepository;
-use App\Models\Product;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -12,7 +11,6 @@ use Illuminate\Validation\ValidationException;
  */
 class CategoryManagement
 {
-
 
     /**
      * @var OrderItemRepository
@@ -25,6 +23,13 @@ class CategoryManagement
      */
     public OrderRepository $orderRepository;
 
+
+    /**
+     * @var ProductManagement
+     */
+    public ProductManagement $productManagement;
+
+
     /**
      *
      */
@@ -32,146 +37,102 @@ class CategoryManagement
     {
         $this->orderItemRepository = new OrderItemRepository();
         $this->orderRepository = new OrderRepository();
+        $this->productManagement = new ProductManagement();
     }
 
 
     /**
+     * @param $data
      * @return mixed
      */
-    public function createOrder(): mixed
+    public function createOrder($data): mixed
     {
-        return $this->orderRepository->create([
+        $order = $this->orderRepository->create([
             'user_id' => request()->header('X-USER-ID'),
             'code' => uniqid(),
             'status' => 1
         ]);
-    }
+        $order->items()->create($data);
 
-
-    public function isNotOrder($product, $request)
-    {
-        if ($product->is_daily) {
-
-            if (!$request->has('daily_at')) {
-                throw ValidationException::withMessages([
-                    'daily_at' => ['Randevu tarihini girmelisiniz !'],
-                ]);
-            }
-
-            $daily_count = $this->orderItemRepository->whereProductWhereDailyAt($request->product_id, $request->daily_at);
-
-            $checkStock = $product->stock >= $daily_count;
-
-
-            if (!$checkStock) {
-                throw ValidationException::withMessages([
-                    'product_id' => ['Gun icerisinde randevu saati kalmamistir !'],
-                ]);
-            }
-            if ($checkStock) {
-                $order = $this->createOrder();
-                $order->items()->create($request->validated() + ['price' => $product->price]);
-                return $order;
-            }
-        }
-
-        if (!$request->has('quantity')) {
-            throw ValidationException::withMessages([
-                'daily_at' => ['Urun adedini girmelisiniz !'],
-            ]);
-        }
-
-
-        $checkStock = $product->stock >= $request->quantity;
-        if (!$checkStock) {
-            throw ValidationException::withMessages([
-                'product_id' => ['Urun tukenmistir !'],
-            ]);
-        }
-        $order = $this->createOrder();
-
-        $order->items()->create([
-            'price' => $product->price,
-            'product_id' => $request->product_id,
-            'quantity' => $request->quantity
-        ]);
-        $product->decrement('stock', $request->quantity);
         return $order;
     }
 
 
-    public function isOrder($order, $product, $request)
+    /**
+     * @param $product
+     * @param $quantity
+     * @return void
+     * @throws ValidationException
+     */
+    public function checkProductStock($product, $quantity): void
+    {
+        if (!($product->stock >= $quantity)) {
+            throw ValidationException::withMessages([
+                'product_id' => ['Urun tukenmistir !'],
+            ]);
+        }
+    }
+
+
+    /**
+     * @param $product
+     * @param $request
+     * @return mixed
+     * @throws ValidationException
+     */
+    public function isNotOrder($product, $request): mixed
+    {
+        $this->checkProductStock($product, $request->quantity);
+        $order = $this->createOrder($request->validated() + ['price' => $product->price]);
+        $this->productManagement->stockDecrement($product, $request->quantity);
+        return $order;
+    }
+
+
+    /**
+     * @param $order
+     * @param $data
+     * @return void
+     */
+    public function storeOrderItems($order, $data): void
+    {
+        $order->items()->create($data);
+    }
+
+
+    /**
+     * @param $order
+     * @param $product
+     * @param $request
+     * @return mixed
+     * @throws ValidationException
+     */
+    public function isOrder($order, $product, $request): mixed
     {
         if (collect($order->items)->where('product_id', $request->product_id)->values()->first()) {
             throw ValidationException::withMessages([
                 'product_id' => ['Urunu sepet icinde tekrar tanimlayamazsiniz !'],
             ]);
         }
-
-
-        if ($product->is_daily != Product::find(collect($order->items)->first()->product_id)->is_daily) {
-            throw ValidationException::withMessages([
-                'product_id' => ['Randevulu ve randevusuz urunleri ayni sepette tanimlayamazsiniz !'],
-            ]);
-        }
-
-
-
-        if ($product->is_daily) {
-
-            if (!$request->has('daily_at')) {
-                throw ValidationException::withMessages([
-                    'daily_at' => ['Randevu tarihini girmelisiniz !'],
-                ]);
-            }
-
-            $daily_count = $this->orderItemRepository->whereProductWhereDailyAt($request->product_id, $request->daily_at);
-
-            $checkStock = $product->stock >= $daily_count;
-
-
-            if (!$checkStock) {
-                throw ValidationException::withMessages([
-                    'product_id' => ['Gun icerisinde randevu saati kalmamistir !'],
-                ]);
-            }
-            if ($checkStock) {
-                $order->items()->create($request->validated() + ['price' => $product->price]);
-                return $order;
-            }
-        }
-
-        if (!$request->has('quantity')) {
-            throw ValidationException::withMessages([
-                'daily_at' => ['Urun adedini girmelisiniz !'],
-            ]);
-        }
-
-
-        $checkStock = $product->stock >= $request->quantity;
-        if (!$checkStock) {
-            throw ValidationException::withMessages([
-                'product_id' => ['Urun tukenmistir !'],
-            ]);
-        }
-
-        $order->items()->create([
-            'price' => $product->price,
-            'product_id' => $request->product_id,
-            'quantity' => $request->quantity
-        ]);
-        $product->decrement('stock', $request->quantity);
+        $this->checkProductStock($product, $request->quantity);
+        $this->storeOrderItems($order, $request->validated() + ['price' => $product->price]);
+        $this->productManagement->stockDecrement($product, $request->quantity);
         return $order;
-
     }
 
-    public function generateOrder($order, $product, $request)
+
+    /**
+     * @param $order
+     * @param $product
+     * @param $request
+     * @return mixed
+     * @throws ValidationException
+     */
+    public function generateOrder($order, $product, $request): mixed
     {
         if (!$order) {
             return $this->isNotOrder($product, $request);
         }
-
-
         return $this->isOrder($order, $product, $request);
     }
 
