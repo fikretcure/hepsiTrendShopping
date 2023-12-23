@@ -6,7 +6,7 @@ use App\Http\Resources\Extends\CategoryExtendCollection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OrderCollection extends JsonResource
+class OrderItemCollection extends JsonResource
 {
     /**
      * Transform the resource collection into an array.
@@ -17,9 +17,10 @@ class OrderCollection extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => $this->user_id,
-            'status' => $this->status,
-            'items' => OrderItemCollection::collection($this->items)
+            'product_id' => $this->product_id,
+            'product_name' => $this->product->name,
+            'price' => $this->price,
+            'quantity' => $this->quantity
         ];
     }
 
