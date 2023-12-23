@@ -4,6 +4,7 @@ namespace App\Http\Managements;
 
 use App\Http\Repositories\OrderItemRepository;
 use App\Http\Repositories\OrderRepository;
+use App\Http\Repositories\ProductRepository;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -31,6 +32,11 @@ class OrderManagement
 
 
     /**
+     * @var ProductRepository
+     */
+    public ProductRepository $productRepository;
+
+    /**
      *
      */
     public function __construct()
@@ -38,6 +44,7 @@ class OrderManagement
         $this->orderItemRepository = new OrderItemRepository();
         $this->orderRepository = new OrderRepository();
         $this->productManagement = new ProductManagement();
+        $this->productRepository = new ProductRepository();
     }
 
 
@@ -136,4 +143,58 @@ class OrderManagement
         return $this->isOrder($order, $product, $request);
     }
 
+
+    /**
+     * @param $order
+     * @param $product
+     * @return void
+     * @throws ValidationException
+     */
+    public function incrementQuantityProduct($order, $product): void
+    {
+        $this->checkProductStock($product, 1);
+        $this->orderItemRepository->incrementQuantityWhereOrderWhereProduct($order->id, $product->id);
+    }
+
+    /**
+     * @param $order
+     * @param $product
+     * @return void
+     */
+    public function decrementQuantityProduct($order, $product): void
+    {
+        $this->orderItemRepository->decrementQuantityWhereOrderWhereProduct($order->id, $product->id);
+    }
+
+    /**
+     * @param $order
+     * @param $product
+     * @return void
+     */
+    public function removeProduct($order, $product): void
+    {
+        $this->orderItemRepository->removeProduct($order->id, $product->id);
+    }
+
+
+    /**
+     * @param $request
+     * @return array
+     * @throws ValidationException
+     */
+    public function checkOrderAndProduct($request): array
+    {
+        $order = $this->orderRepository->whereUserWhereStatusBasket();
+        if (!($order && $this->orderItemRepository->whereOrderWhereProduct($order->id, $request->product_id))) {
+            throw ValidationException::withMessages([
+                'product_id' => ['Urunu sepete eklemeniz gerekiyor !'],
+            ]);
+        }
+        $product = $this->productRepository->find($request->product_id);
+
+        return [
+            'order' => $order,
+            'product' => $product,
+        ];
+    }
 }
