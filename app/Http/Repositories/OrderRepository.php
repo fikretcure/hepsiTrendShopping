@@ -44,4 +44,14 @@ class OrderRepository extends Repository
     {
         return $this->model->where('user_id', request()->header('X-USER-ID'))->where('status', 1)->first();
     }
+
+
+    /**
+     * @return mixed
+     */
+    public function whereUserWhereStatusBasketAll(): mixed
+    {
+        $data = $this->model->where('user_id', request()->header('X-USER-ID'))->where('status', 1)->first();
+        return $data->items;
+    }
 }
