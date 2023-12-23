@@ -18,6 +18,7 @@ class ProductCollection extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'expert_user' => collect($this->expert_user)->except('email'),
             'price' => $this->price,
             'daily_stock' => $this->daily_stock,
             'desc' => $this->desc,
