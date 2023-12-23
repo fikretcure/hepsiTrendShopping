@@ -25,11 +25,4 @@ class OrderItemRepository extends Repository
         $this->model = new OrderItem();
         parent::__construct($this->model);
     }
-
-
-    public function whereProductWhereDailyAt($product_id, $daily_at)
-    {
-        return $this->model->where('product_id', $product_id)->whereDate("daily_at", $daily_at)->count();
-
-    }
 }
