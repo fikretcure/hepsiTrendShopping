@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
             'price' => 100,
             'stock' => 10,
             'desc' => '1',
-            'avatar' => '1',
             'payment_type' => 1
         ]);
 
@@ -31,7 +30,6 @@ class DatabaseSeeder extends Seeder
             'price' => 100,
             'stock' => 10,
             'desc' => '1',
-            'avatar' => '1',
             'payment_type' => 1
         ]);
 
@@ -42,7 +40,6 @@ class DatabaseSeeder extends Seeder
             'price' => 100,
             'stock' => 10,
             'desc' => '1',
-            'avatar' => '1',
             'payment_type' => 1
         ]);
 
@@ -55,7 +52,6 @@ class DatabaseSeeder extends Seeder
             'price' => 100,
             'stock' => 1000,
             'desc' => '1',
-            'avatar' => '1',
         ]);
 
         $category->products()->create([
@@ -63,7 +59,6 @@ class DatabaseSeeder extends Seeder
             'price' => 100,
             'stock' => 420,
             'desc' => '1',
-            'avatar' => '1',
         ]);
     }
 }

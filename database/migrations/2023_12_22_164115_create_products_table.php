@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->integer('stock');
             $table->boolean('payment_type')->default(0);
             $table->string('desc');
-            $table->string('avatar');
+            $table->string('avatar')->nullable();
             $table->timestamps();
         });
     }

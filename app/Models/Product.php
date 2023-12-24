@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,13 +35,13 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+
     /**
-     * @return Attribute
+     * @param $value
+     * @return string|null
      */
-    protected function avatar(): Attribute
+    public function getAvatarAttribute($value): ?string
     {
-        return Attribute::make(
-            get: fn(string $value) => Request::root() . '/storage/avatar/' . $value,
-        );
+        return $value ? Request::root() . '/storage/avatar/' . $value : null;
     }
 }
