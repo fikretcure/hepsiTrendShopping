@@ -29,7 +29,7 @@ class StoreProductRequest extends FormRequest
         return [
             'category_id' => [
                 'required',
-                Rule::exists(Category::class, 'id')
+                Rule::exists(Category::class, 'id')->where('deleted_at',null)
             ],
             'name' => [
                 'required',
