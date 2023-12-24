@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->integer('user_id');
             $table->integer('status');
+            $table->boolean('is_payment')->default(0);
             $table->timestamps();
         });
     }
