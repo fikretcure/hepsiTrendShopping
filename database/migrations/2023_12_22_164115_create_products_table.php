@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string('desc');
             $table->string('avatar')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

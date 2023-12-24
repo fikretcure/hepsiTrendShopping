@@ -43,6 +43,10 @@ class DatabaseSeeder extends Seeder
             'payment_type' => 1
         ]);
 
+        Category::create([
+            'name' => 'Diger'
+        ]);
+
         $category = Category::create([
             'name' => 'Kitap'
         ]);
