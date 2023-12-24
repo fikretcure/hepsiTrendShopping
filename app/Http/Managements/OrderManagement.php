@@ -195,4 +195,18 @@ class OrderManagement
             'product' => $product,
         ];
     }
+
+
+    /**
+     * @param $orderItems
+     * @return float|int
+     */
+    public function calculateBasket($orderItems): float|int
+    {
+        $money = 0;
+        $orderItems->each(function ($item, $key) use (&$money) {
+            $money += $item->price * $item->quantity;
+        });
+        return $money;
+    }
 }
