@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Managements\ExitManagement;
+use App\Http\Managements\ProductManagement;
 use App\Http\Repositories\ProductRepository;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -21,6 +22,10 @@ class ProductController extends Controller
      */
     public ProductRepository $productRepository;
 
+    /**
+     * @var ProductManagement
+     */
+    public ProductManagement $productManagement;
 
     /**
      *
@@ -28,6 +33,7 @@ class ProductController extends Controller
     public function __construct()
     {
         $this->productRepository = new ProductRepository();
+        $this->productManagement = new ProductManagement();
     }
 
 
@@ -47,6 +53,7 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request): JsonResponse
     {
         $store = $this->productRepository->create($request->validated());
+        $this->productManagement->moveFile($request);
         return ExitManagement::ok(ProductCollection::make($store));
     }
 
@@ -69,6 +76,7 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {
         $update = $this->productRepository->update($product->id, $request->validated());
+        $this->productManagement->moveFile($request);
         return ExitManagement::ok($update);
     }
 
