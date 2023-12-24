@@ -84,11 +84,9 @@ class CategoryController extends Controller
     /**
      * @param Category $category
      * @return JsonResponse
-     * @throws ValidationException
      */
     public function destroy(Category $category): JsonResponse
     {
-        $this->categoryManagement->checkUsageProduct($category);
         return ExitManagement::ok($category->delete());
     }
 }

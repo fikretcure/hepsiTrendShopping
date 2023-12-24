@@ -48,7 +48,7 @@ class StoreProductRequest extends FormRequest
                 'string',
             ],
             'avatar' => [
-                'required',
+                'nullable',
                 'string',
                 new StorageFileExists()
             ]

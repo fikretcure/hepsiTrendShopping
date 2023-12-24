@@ -30,7 +30,7 @@ class UpdateProductRequest extends FormRequest
             'category_id' => [
                 'filled',
                 'numeric',
-                Rule::exists(Category::class, 'id')
+                Rule::exists(Category::class, 'id')->where('deleted_at',null)
             ],
             'name' => [
                 'filled',

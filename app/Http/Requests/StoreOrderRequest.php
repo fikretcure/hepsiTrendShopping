@@ -27,7 +27,7 @@ class StoreOrderRequest extends FormRequest
             'product_id' => [
                 'required',
                 'integer',
-                Rule::exists(Product::class, 'id')
+                Rule::exists(Product::class, 'id')->where('deleted_at',null)
             ],
             'quantity' => [
                 'required',

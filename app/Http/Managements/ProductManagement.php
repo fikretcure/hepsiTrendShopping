@@ -65,7 +65,7 @@ class ProductManagement
     {
         $file_type = Str::of($request->avatar)->explode('.')->last();
         $status = collect(['png', 'jpeg', 'jpg'])->contains($file_type);
-        if (!$status) {
+        if ($request->filled('avatar') and !$status) {
             throw ValidationException::withMessages([
                 'avatar' => ['Yuklediniz dosya png,jpeg yada jpg olmalidir !'],
             ]);
