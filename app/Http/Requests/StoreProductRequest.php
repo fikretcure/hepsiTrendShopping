@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Category;
 use App\Models\Product;
-use App\Rules\UserCheckRule;
+use App\Rules\StorageFileExists;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -49,6 +49,8 @@ class StoreProductRequest extends FormRequest
             ],
             'avatar' => [
                 'required',
+                'string',
+                new StorageFileExists()
             ]
         ];
     }
