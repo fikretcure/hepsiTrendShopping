@@ -156,4 +156,16 @@ class OrderController extends Controller
         return ExitManagement::ok(OrderItemCollection::collection($this->orderRepository->whereUserWhereStatusBasketAll()));
     }
 
+    /**
+     * @return JsonResponse
+     */
+    public function orderId(): JsonResponse
+    {
+        $order = $this->orderRepository->whereUserWhereStatusBasket();
+        return ExitManagement::ok([
+            'order_id' => $order->id,
+            'money' => $this->orderManagement->calculateBasket($order->items)
+        ]);
+    }
+
 }
