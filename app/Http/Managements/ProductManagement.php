@@ -50,7 +50,7 @@ class ProductManagement
      */
     public function moveFile($request): void
     {
-        $this->fileManagement->moveFile('public/file/' . $request->avatar, 'avatar/' . $request->avatar);
+        $this->fileManagement->moveFile('public/file/' . $request->avatar, 'public/avatar/' . $request->avatar);
     }
 
 }
