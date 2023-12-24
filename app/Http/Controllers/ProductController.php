@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductCollection;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 
 /**
  *
@@ -49,9 +50,11 @@ class ProductController extends Controller
     /**
      * @param StoreProductRequest $request
      * @return JsonResponse
+     * @throws ValidationException
      */
     public function store(StoreProductRequest $request): JsonResponse
     {
+        $this->productManagement->checkImageType($request);
         $store = $this->productRepository->create($request->validated());
         $this->productManagement->moveFile($request);
         return ExitManagement::ok(ProductCollection::make($store));
@@ -72,9 +75,11 @@ class ProductController extends Controller
      * @param UpdateProductRequest $request
      * @param Product $product
      * @return JsonResponse
+     * @throws ValidationException
      */
     public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {
+        $this->productManagement->checkImageType($request);
         $update = $this->productRepository->update($product->id, $request->validated());
         $this->productManagement->moveFile($request);
         return ExitManagement::ok($update);
