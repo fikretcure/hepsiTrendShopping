@@ -37,15 +37,15 @@ class StoreProductRequest extends FormRequest
             ],
             'price' => [
                 'required',
+                'numeric'
             ],
             'stock' => [
                 'required',
-            ],
-            'is_daily' => [
-                'required',
+                'integer'
             ],
             'desc' => [
                 'required',
+                'string',
             ],
             'avatar' => [
                 'required',

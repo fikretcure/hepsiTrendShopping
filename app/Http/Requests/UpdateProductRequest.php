@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Rules\StorageFileExists;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -42,11 +43,7 @@ class UpdateProductRequest extends FormRequest
             ],
             'stock' => [
                 'filled',
-                'numeric'
-            ],
-            'is_daily' => [
-                'filled',
-                'boolean'
+                'integer'
             ],
             'desc' => [
                 'filled',
@@ -54,7 +51,8 @@ class UpdateProductRequest extends FormRequest
             ],
             'avatar' => [
                 'filled',
-                'string'
+                'string',
+                new StorageFileExists()
             ]
         ];
     }
