@@ -25,6 +25,7 @@ Route::prefix('basket')->controller(OrderController::class)->group(function () {
     Route::put('increasing-quantity-product', 'increasingQuantityProduct')->name('increasingQuantityProduct');
     Route::put('decrement-quantity-product', 'decrementQuantityProduct')->name('decrementQuantityProduct');
     Route::delete('remove-product', 'removeProduct')->name('removeProduct');
+    Route::get('order-id', 'orderId')->name('orderId');
 });
 
 Route::apiResource('orders', OrderController::class);
