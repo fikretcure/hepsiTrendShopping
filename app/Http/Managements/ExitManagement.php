@@ -13,7 +13,7 @@ class ExitManagement
      * @param $data
      * @return JsonResponse
      */
-    public static function ok($data = null)
+    public static function ok($data = null): JsonResponse
     {
         return response()->json([
             'data' => $data
@@ -23,11 +23,13 @@ class ExitManagement
 
     /**
      * @param $data
-     * @param $status
+     * @param int $status
      * @return JsonResponse
      */
-    public static function error($data = null, $status = 422)
+    public static function error($data = null, int $status = 422): JsonResponse
     {
-        return response()->json($data, $status);
+        return response()->json([
+            'data' => $data
+        ]);
     }
 }
