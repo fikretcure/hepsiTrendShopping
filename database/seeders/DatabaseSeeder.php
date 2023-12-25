@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
         ])->products()->create([
             'name' => 'Lastik Degisimi',
             'price' => 100,
-            'stock' => 10,
-            'desc' => '1',
+            'stock' => rand(50,1000),
+            'desc' => 'Lastik Degisimi',
         ]);
 
         Category::create([
@@ -27,8 +27,8 @@ class DatabaseSeeder extends Seeder
         ])->products()->create([
             'name' => 'Musluk Tamiri',
             'price' => 100,
-            'stock' => 10,
-            'desc' => '1',
+            'stock' => rand(50,1000),
+            'desc' => 'Musluk Tamiri',
         ]);
 
         Category::create([
@@ -36,8 +36,8 @@ class DatabaseSeeder extends Seeder
         ])->products()->create([
             'name' => 'Matematik Dersi',
             'price' => 100,
-            'stock' => 10,
-            'desc' => '1',
+            'stock' => rand(50,1000),
+            'desc' => 'Matematik Dersi',
         ]);
 
         Category::create([
@@ -51,15 +51,15 @@ class DatabaseSeeder extends Seeder
         $category->products()->create([
             'name' => 'Fen Bilgisi',
             'price' => 100,
-            'stock' => 1000,
-            'desc' => '1',
+            'stock' => rand(50,1000),
+            'desc' => 'Fen Bilgisi',
         ]);
 
         $category->products()->create([
             'name' => 'Turkce',
             'price' => 100,
-            'stock' => 420,
-            'desc' => '1',
+            'stock' => rand(50,1000),
+            'desc' => 'Turkce',
         ]);
     }
 }
