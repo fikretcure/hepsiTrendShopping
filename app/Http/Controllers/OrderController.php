@@ -8,9 +8,11 @@ use App\Http\Managements\OrderManagement;
 use App\Http\Repositories\OrderItemRepository;
 use App\Http\Repositories\OrderRepository;
 use App\Http\Repositories\ProductRepository;
+use App\Http\Requests\OrderPaymentRequest;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderItemCollection;
+use App\Http\Services\GatewayService;
 use App\Models\Order;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -148,14 +150,29 @@ class OrderController extends Controller
     }
 
     /**
+     * @param OrderPaymentRequest $request
      * @return JsonResponse
+     * @throws ValidationException
      */
-    public function orderId(): JsonResponse
+    public function payment(OrderPaymentRequest $request): JsonResponse
     {
         $order = $this->orderRepository->whereUserWhereStatusBasket();
-        return ExitManagement::ok([
-            'order_id' => $order->id,
-            'money' => $this->orderManagement->calculateBasket($order->items)
+
+        if ($order && isset($order->items)) {
+            $request->merge([
+                'order_id' => $order->id,
+                'money' => $this->orderManagement->calculateBasket($order->items)
+            ]);
+            $this->orderManagement->payment();
+            $this->orderRepository->update($order->id, [
+                'is_payment' => 1,
+                'status' => 2,
+            ]);
+
+            return ExitManagement::ok($order);
+        }
+        throw ValidationException::withMessages([
+            'basket' => ['Siparisinizi kontrol etmelisiniz !'],
         ]);
     }
 
