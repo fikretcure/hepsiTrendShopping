@@ -5,6 +5,7 @@ namespace App\Http\Managements;
 use App\Http\Repositories\OrderItemRepository;
 use App\Http\Repositories\OrderRepository;
 use App\Http\Repositories\ProductRepository;
+use App\Http\Services\GatewayService;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -37,6 +38,11 @@ class OrderManagement
     public ProductRepository $productRepository;
 
     /**
+     * @var GatewayService
+     */
+    public GatewayService $gatewayService;
+
+    /**
      *
      */
     public function __construct()
@@ -45,6 +51,7 @@ class OrderManagement
         $this->orderRepository = new OrderRepository();
         $this->productManagement = new ProductManagement();
         $this->productRepository = new ProductRepository();
+        $this->gatewayService = new GatewayService();
     }
 
 
@@ -208,5 +215,20 @@ class OrderManagement
             $money += $item->price * $item->quantity;
         });
         return $money;
+    }
+
+    /**
+     * @return void
+     * @throws ValidationException
+     */
+    public function payment(): void
+    {
+        $gateway = $this->gatewayService->send(method: 'post', path: 'api/payment', file_path: null);
+
+        if (!$gateway->original['data']['status']) {
+            throw ValidationException::withMessages([
+                'card_no' => ['Odeme basarisiz'],
+            ]);
+        }
     }
 }
