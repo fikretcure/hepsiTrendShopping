@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->string('name')->unique();
             $table->float('price');
             $table->integer('stock');
-            $table->boolean('payment_type')->default(0);
             $table->string('desc');
             $table->string('avatar')->nullable();
             $table->timestamps();

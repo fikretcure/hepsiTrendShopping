@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
             'price' => 100,
             'stock' => 10,
             'desc' => '1',
-            'payment_type' => 1
         ]);
 
         Category::create([
@@ -30,7 +29,6 @@ class DatabaseSeeder extends Seeder
             'price' => 100,
             'stock' => 10,
             'desc' => '1',
-            'payment_type' => 1
         ]);
 
         Category::create([
@@ -40,7 +38,6 @@ class DatabaseSeeder extends Seeder
             'price' => 100,
             'stock' => 10,
             'desc' => '1',
-            'payment_type' => 1
         ]);
 
         Category::create([
