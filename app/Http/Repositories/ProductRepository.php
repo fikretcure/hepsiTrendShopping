@@ -25,4 +25,16 @@ class ProductRepository extends Repository
         $this->model = new Product();
         parent::__construct($this->model);
     }
+
+
+    /**
+     * @param $data
+     * @return void
+     */
+    public function decrementStock($data): void
+    {
+        $data->each(function ($item, $key) {
+            $this->model->where('id', $item->product_id)->decrement('stock', $item->quantity);
+        });
+    }
 }
