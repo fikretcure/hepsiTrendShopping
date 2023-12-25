@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OrderStatusEnum;
 use App\Http\Managements\CategoryManagement;
 use App\Http\Managements\ExitManagement;
 use App\Http\Managements\OrderManagement;
@@ -164,8 +165,8 @@ class OrderController extends Controller
             ]);
             $this->orderManagement->payment();
             $this->orderRepository->update($order->id, [
-                'is_payment' => 1,
-                'status' => 2,
+                'is_payment' => true,
+                'status' => OrderStatusEnum::PROCESSING->value,
             ]);
 
             $this->productRepository->decrementStock($order->items);
