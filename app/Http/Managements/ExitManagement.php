@@ -16,7 +16,8 @@ class ExitManagement
     public static function ok($data = null): JsonResponse
     {
         return response()->json([
-            'data' => $data
+            'data' => $data,
+            'status' => true
         ]);
     }
 
@@ -29,7 +30,8 @@ class ExitManagement
     public static function error($data = null, int $status = 422): JsonResponse
     {
         return response()->json([
-            'data' => $data
+            'data' => $data,
+            'status' => false
         ]);
     }
 }
