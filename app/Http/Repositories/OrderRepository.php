@@ -3,9 +3,12 @@
 namespace App\Http\Repositories;
 
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\ValidationException;
 
 
 /**
@@ -53,5 +56,30 @@ class OrderRepository extends Repository
     {
         $data = $this->model->where('user_id', request()->header('X-USER-ID'))->where('status', 1)->first();
         return $data->items ?? [];
+    }
+
+
+    /**
+     * @param $id
+     * @return mixed
+     * @throws ValidationException
+     */
+    public function checkHasItem($id): mixed
+    {
+        $data = $this->model
+            ->where('user_id', request()->header('X-USER-ID'))
+            ->where('is_payment', true)
+            ->where('status', OrderStatusEnum::PROCESSING->value)
+            ->whereHas('items', function (Builder $query) use ($id) {
+                $query->where('id', $id);
+            })
+            ->first();
+
+        if (!$data) {
+            throw ValidationException::withMessages([
+                'id' => ['Lutfen destege basvurunuz !'],
+            ]);
+        }
+        return $data;
     }
 }
