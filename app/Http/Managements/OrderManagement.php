@@ -2,6 +2,7 @@
 
 namespace App\Http\Managements;
 
+use App\Enums\OrderStatusEnum;
 use App\Http\Repositories\OrderItemRepository;
 use App\Http\Repositories\OrderRepository;
 use App\Http\Repositories\ProductRepository;
@@ -64,10 +65,9 @@ class OrderManagement
         $order = $this->orderRepository->create([
             'user_id' => request()->header('X-USER-ID'),
             'code' => uniqid(),
-            'status' => 1
+            'status' => OrderStatusEnum::IN_BASKET->value
         ]);
         $order->items()->create($data);
-
         return $order;
     }
 
