@@ -12,7 +12,6 @@ use App\Http\Requests\OrderPaymentRequest;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderItemCollection;
-use App\Http\Services\GatewayService;
 use App\Models\Order;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -169,6 +168,7 @@ class OrderController extends Controller
                 'status' => 2,
             ]);
 
+            $this->productRepository->decrementStock($order->items);
             return ExitManagement::ok($order);
         }
         throw ValidationException::withMessages([
