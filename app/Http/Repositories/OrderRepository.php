@@ -83,4 +83,13 @@ class OrderRepository extends Repository
         }
         return $data;
     }
+
+    /**
+     * @param int $id
+     * @return mixed
+     */
+    public function show(int $id): mixed
+    {
+        return $this->model->whereId($id)->with('items')->where('user_id', request()->header('X-USER-ID'))->where('status', '!=', 1)->first();
+    }
 }

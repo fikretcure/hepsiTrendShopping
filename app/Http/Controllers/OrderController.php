@@ -15,7 +15,6 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderItemCollection;
 use App\Http\Services\GatewayService;
-use App\Models\Order;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -89,22 +88,15 @@ class OrderController extends Controller
         return ExitManagement::ok(OrderItemCollection::collection($this->orderRepository->whereUserWhereStatusBasketAll()));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Order $order)
-    {
-        //
-    }
 
     /**
-     * Remove the specified resource from storage.
+     * @param $id
+     * @return JsonResponse
      */
-    public function destroy(Order $order)
+    public function show($id): JsonResponse
     {
-        //
+        return ExitManagement::ok(OrderCollection::make($this->orderRepository->show($id)));
     }
-
 
     /**
      * @return JsonResponse
@@ -179,6 +171,12 @@ class OrderController extends Controller
         ]);
     }
 
+    /**
+     * @param OrderChangeSuccessRequest $request
+     * @param $id
+     * @return JsonResponse
+     * @throws ValidationException
+     */
     public function changeSuccesful(OrderChangeSuccessRequest $request, $id): JsonResponse
     {
         $order = $this->orderRepository->checkHasItem($id);
