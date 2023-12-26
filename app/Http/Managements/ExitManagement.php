@@ -15,6 +15,16 @@ class ExitManagement
      */
     public static function ok($data = null): JsonResponse
     {
+        if (request()->has('page')) {
+            $data = $data->response()->getData(true);
+            return response()->json([
+                "data" => $data['data'],
+                "links" => $data['links'],
+                "meta" => $data['meta'],
+                'status' => true
+            ]);
+        }
+
         return response()->json([
             'data' => $data,
             'status' => true
