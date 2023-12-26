@@ -36,7 +36,7 @@ class OrderRepository extends Repository
      */
     public function all(): LengthAwarePaginator
     {
-        return $this->model->where('status', '!=', 1)->paginate();
+        return $this->model->where('status', '!=', OrderStatusEnum::IN_BASKET->value)->paginate();
     }
 
 
@@ -45,7 +45,7 @@ class OrderRepository extends Repository
      */
     public function whereUserWhereStatusBasket(): mixed
     {
-        return $this->model->where('user_id', request()->header('X-USER-ID'))->where('status', 1)->first();
+        return $this->model->where('user_id', request()->header('X-USER-ID'))->where('status', OrderStatusEnum::IN_BASKET->value)->first();
     }
 
 
@@ -54,7 +54,7 @@ class OrderRepository extends Repository
      */
     public function whereUserWhereStatusBasketAll(): mixed
     {
-        $data = $this->model->where('user_id', request()->header('X-USER-ID'))->where('status', 1)->first();
+        $data = $this->model->where('user_id', request()->header('X-USER-ID'))->where('status', OrderStatusEnum::IN_BASKET->value)->first();
         return $data->items ?? [];
     }
 
@@ -90,6 +90,6 @@ class OrderRepository extends Repository
      */
     public function show(int $id): mixed
     {
-        return $this->model->whereId($id)->with('items')->where('user_id', request()->header('X-USER-ID'))->where('status', '!=', 1)->first();
+        return $this->model->whereId($id)->with('items')->where('user_id', request()->header('X-USER-ID'))->where('status', '!=', OrderStatusEnum::IN_BASKET->value)->first();
     }
 }
