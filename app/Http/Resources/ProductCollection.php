@@ -20,12 +20,9 @@ class ProductCollection extends JsonResource
             'name' => $this->name,
             'price' => $this->price,
             'stock' => $this->stock,
-            'payment_type' => $this->payment_type,
             'desc' => $this->desc,
             'avatar' => $this->avatar,
             'category' => CategoryExtendCollection::make($this->category),
         ];
     }
-
-
 }
