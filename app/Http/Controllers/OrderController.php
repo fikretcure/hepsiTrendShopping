@@ -182,26 +182,20 @@ class OrderController extends Controller
     public function changeSuccesful(OrderChangeSuccessRequest $request, $id): JsonResponse
     {
         $order = $this->orderRepository->checkHasItem($id);
-        // $this->orderItemRepository->update($id, [
-        //     "is_successful" => $request->status
-        // ]);
+        $this->orderItemRepository->update($id, [
+            "is_successful" => $request->status
+        ]);
 
-
+        $item = $this->orderItemRepository->find($id);
+        $request->merge([
+            'order_id' => $order->id,
+            'item' => $item,
+            'product' => $this->productRepository->find($item->id)
+        ]);
         if ($request->status) {
-
-            $item = $this->orderItemRepository->find($id);
-
-            $request->merge([
-                'order_id' => $order->id,
-                'item' => $item,
-                'product' => $this->productRepository->find($item->id)
-            ]);
-
-
             return ExitManagement::ok((new GatewayService())->send('post', 'api/invoices', null));
-
         }
-        return ExitManagement::ok();
+        return ExitManagement::ok((new GatewayService())->send('post', 'api/failed-service', null));
     }
 
 }
