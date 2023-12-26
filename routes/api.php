@@ -27,6 +27,7 @@ Route::prefix('basket')->controller(OrderController::class)->group(function () {
     Route::delete('remove-product', 'removeProduct')->name('removeProduct');
     Route::post('payment', 'payment')->name('payment');
 });
+Route::put('order-items/change-succesful/{id}', [OrderController::class, 'changeSuccesful']);
 
 Route::apiResource('orders', OrderController::class);
 Route::post('upload', [FileController::class, 'upload']);

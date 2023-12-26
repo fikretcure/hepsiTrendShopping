@@ -9,10 +9,12 @@ use App\Http\Managements\OrderManagement;
 use App\Http\Repositories\OrderItemRepository;
 use App\Http\Repositories\OrderRepository;
 use App\Http\Repositories\ProductRepository;
+use App\Http\Requests\OrderChangeSuccessRequest;
 use App\Http\Requests\OrderPaymentRequest;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderItemCollection;
+use App\Http\Services\GatewayService;
 use App\Models\Order;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -175,6 +177,31 @@ class OrderController extends Controller
         throw ValidationException::withMessages([
             'basket' => ['Siparisinizi kontrol etmelisiniz !'],
         ]);
+    }
+
+    public function changeSuccesful(OrderChangeSuccessRequest $request, $id): JsonResponse
+    {
+        $order = $this->orderRepository->checkHasItem($id);
+        // $this->orderItemRepository->update($id, [
+        //     "is_successful" => $request->status
+        // ]);
+
+
+        if ($request->status) {
+
+            $item = $this->orderItemRepository->find($id);
+
+            $request->merge([
+                'order_id' => $order->id,
+                'item' => $item,
+                'product' => $this->productRepository->find($item->id)
+            ]);
+
+
+            return ExitManagement::ok((new GatewayService())->send('post', 'api/invoices', null));
+
+        }
+        return ExitManagement::ok();
     }
 
 }

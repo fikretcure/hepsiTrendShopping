@@ -72,6 +72,7 @@ class OrderRepository extends Repository
             ->where('status', OrderStatusEnum::PROCESSING->value)
             ->whereHas('items', function (Builder $query) use ($id) {
                 $query->where('id', $id);
+                $query->whereNull('is_successful');
             })
             ->first();
 

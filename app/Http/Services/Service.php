@@ -32,13 +32,14 @@ class Service
                 'content-ype' => 'multipart/form-data',
                 'X-USER-ID' => request()->header('X-USER-ID'),
                 'X-USER-EMAIL' => request()->header('X-USER-EMAIL'),
+                'X-USER-NAME' => request()->header('X-USER-NAME'),
             ])->withToken(request()->bearerToken())->accept('application/json')->{$method}($this->baseUrl . $path, request()->all());
-
             Process::run('rm -rf ' . $file_path);
         } else {
             $response = Http::withHeaders([
                 'X-USER-ID' => request()->header('X-USER-ID'),
                 'X-USER-EMAIL' => request()->header('X-USER-EMAIL'),
+                'X-USER-NAME' => request()->header('X-USER-NAME'),
             ])->withToken(request()->bearerToken())->accept('application/json')->{$method}($this->baseUrl . $path, request()->all());
         }
 
