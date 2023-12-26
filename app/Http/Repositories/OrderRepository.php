@@ -5,7 +5,7 @@ namespace App\Http\Repositories;
 
 use App\Enums\OrderStatusEnum;
 use App\Models\Order;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\ValidationException;
@@ -32,11 +32,11 @@ class OrderRepository extends Repository
 
 
     /**
-     * @return Collection
+     * @return LengthAwarePaginator
      */
-    public function all(): Collection
+    public function all(): LengthAwarePaginator
     {
-        return $this->model->where('status', '!=', 1)->get();
+        return $this->model->where('status', '!=', 1)->paginate();
     }
 
 
