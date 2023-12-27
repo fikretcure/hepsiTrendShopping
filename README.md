@@ -21,6 +21,7 @@
 - php artisan migrate:fresh
 - php artisan vendor:publish --provider="Barryvdh\DomPDF\ServiceProvider"
 - php artisan storage:link
+- php artisan queue:listen
 - php artisan serve --port=8006
 
 
