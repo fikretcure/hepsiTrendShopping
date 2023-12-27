@@ -53,6 +53,12 @@ class OrderController extends Controller
      */
     public OrderItemRepository $orderItemRepository;
 
+
+    /**
+     * @var GatewayService
+     */
+    public GatewayService $gatewayService;
+
     /**
      *
      */
@@ -63,6 +69,7 @@ class OrderController extends Controller
         $this->categoryManagement = new CategoryManagement();
         $this->orderManagement = new OrderManagement();
         $this->orderItemRepository = new OrderItemRepository();
+        $this->gatewayService = new GatewayService();
     }
 
 
@@ -191,9 +198,10 @@ class OrderController extends Controller
             'product' => $this->productRepository->find($item->id)
         ]);
         if ($request->status) {
-            return ExitManagement::ok((new GatewayService())->send('post', 'api/invoices', null));
+            $this->gatewayService->send('post', 'api/invoices', null);
+        } else {
+            $this->gatewayService->send('post', 'api/failed-service', null);
         }
-        return ExitManagement::ok((new GatewayService())->send('post', 'api/failed-service', null));
+        return ExitManagement::ok();
     }
-
 }
