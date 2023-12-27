@@ -34,7 +34,7 @@ class OrderItemRepository extends Repository
      */
     public function incrementQuantityWhereOrderWhereProduct($order_id, $product_id): mixed
     {
-        return $this->model->where('order_id', $order_id)->where('product_id', $product_id)->increment('quantity');
+        return $this->whereOrderWhereProduct($order_id, $product_id)->increment('quantity');
     }
 
 
@@ -45,11 +45,11 @@ class OrderItemRepository extends Repository
      */
     public function decrementQuantityWhereOrderWhereProduct($order_id, $product_id): mixed
     {
-        $data = $this->model->where('order_id', $order_id)->where('product_id', $product_id)->first();
-        if ($data->quantity == 1) {
-            return $data->delete();
+        $orderItem = $this->whereOrderWhereProduct($order_id, $product_id)->first();
+        if ($orderItem->quantity == 1) {
+            return $orderItem->delete();
         }
-        return $this->model->where('order_id', $order_id)->where('product_id', $product_id)->decrement('quantity');
+        return $orderItem->decrement('quantity');
     }
 
 
@@ -58,9 +58,9 @@ class OrderItemRepository extends Repository
      * @param $product_id
      * @return mixed
      */
-    public function whereOrderWhereProduct($order_id, $product_id): mixed
+    public function whereOrderWhereProductExists($order_id, $product_id): mixed
     {
-        return $this->model->where('order_id', $order_id)->where('product_id', $product_id)->exists();
+        return $this->whereOrderWhereProduct($order_id, $product_id)->exists();
     }
 
 
@@ -71,6 +71,17 @@ class OrderItemRepository extends Repository
      */
     public function removeProduct($order_id, $product_id): mixed
     {
-        return $this->model->where('order_id', $order_id)->where('product_id', $product_id)->delete();
+        return $this->whereOrderWhereProduct($order_id, $product_id)->delete();
+    }
+
+
+    /**
+     * @param int $order_id
+     * @param int $product_id
+     * @return mixed
+     */
+    public function whereOrderWhereProduct(int $order_id, int $product_id): mixed
+    {
+        return $this->model->where('order_id', $order_id)->where('product_id', $product_id);
     }
 }
