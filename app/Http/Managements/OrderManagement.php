@@ -190,7 +190,7 @@ class OrderManagement
     public function checkOrderAndProduct($request): array
     {
         $order = $this->orderRepository->whereUserWhereStatusBasket();
-        if (!($order && $this->orderItemRepository->whereOrderWhereProduct($order->id, $request->product_id))) {
+        if (!($order && $this->orderItemRepository->whereOrderWhereProductExists($order->id, $request->product_id))) {
             throw ValidationException::withMessages([
                 'product_id' => ['Urunu sepete eklemeniz gerekiyor !'],
             ]);
