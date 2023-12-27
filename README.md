@@ -45,6 +45,8 @@
     
     MASTER_ADMIN_EMAIL="sait@gmail.com"
     CUSTOMER_EMAIL="ahmet@gmail.com"
+
+    Default sifre = Ht2023!
     
     keylerini degistirerek kendi mailinizle database'de kurulum yapabilirsiniz.
 - composer install
